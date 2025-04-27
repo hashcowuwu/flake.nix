@@ -23,11 +23,20 @@
 	};
 	nix.settings.experimental-features = [ "nix-command" "flakes" ];
 	nixpkgs.config.allowUnfree = true;
-	fonts.packages = [
-  pkgs.nerd-fonts._0xproto
-  pkgs.nerd-fonts.droid-sans-mono
-];
+	fonts.packages = with pkgs; [
+			noto-fonts
+			noto-fonts-cjk-sans
+			noto-fonts-emoji
+			liberation_ttf
+			fira-code
+			fira-code-symbols
+			mplus-outline-fonts.githubRelease
+			dina-font
+			proggyfonts
+	];
+
 	environment.systemPackages = with pkgs; [ 
+		feishu
 		wget
 		neovim
 		kitty
@@ -209,6 +218,21 @@
 
 # Enable the OpenSSH daemon.
 # services.openssh.enable = true;
+boot.loader.systemd-boot.configurationLimit = 10;
+  # boot.loader.grub.configurationLimit = 10;
+
+  # do garbage collection weekly to keep disk usage low
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 1w";
+  };
+
+  # Optimise storage
+  # you can also optimise the store manually via:
+  #    nix-store --optimise
+  # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
+  nix.settings.auto-optimise-store = true;
 
 # Open ports in the firewall.
 # networking.firewall.allowedTCPPorts = [ ... ];
