@@ -11,6 +11,7 @@
 		];
 
 # Use the systemd-boot EFI boot loader.
+	environment.sessionVariables.NIXOS_OZONE_WL = "1";
 	boot.loader.systemd-boot.enable = true;
 	boot.loader.efi.canTouchEfiVariables = true;
 	services.xserver.xkb.layout = "us";
